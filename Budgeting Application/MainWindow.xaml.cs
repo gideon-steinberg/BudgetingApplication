@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Budgeting_Application.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,9 @@ namespace Budgeting_Application
         public MainWindow()
         {
             InitializeComponent();
+            var db = new Database();
+            var rows = db.ReadDatabase();
+            rows.First();
         }
     }
 }
