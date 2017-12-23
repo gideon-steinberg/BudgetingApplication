@@ -39,7 +39,7 @@ namespace Budgeting_Application
             var builder = new StringBuilder();
             foreach(var trans in transactions)
             {
-                builder.Append($"{trans.Date.ToLongTimeString()} : ({trans.RunningTotal}) {trans.Title} {trans.Amount}\n");
+                builder.Append($"{trans.Date.ToLongDateString()} : ({trans.RunningTotal}) {trans.Title} {trans.Amount}\n");
             }
             TransactionList.Text = builder.ToString();
 
