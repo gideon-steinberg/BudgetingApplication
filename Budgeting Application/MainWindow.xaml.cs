@@ -21,12 +21,25 @@ namespace Budgeting_Application
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<ExpectedDTO> _expectedRows;
+        private Database _db = new Database();
+
         public MainWindow()
         {
             InitializeComponent();
-            var db = new Database();
-            var rows = db.ReadDatabase();
-            rows.First();
+            _expectedRows = _db.ReadDatabase();
+            ResetValues();
+        }
+
+        private void ResetValues()
+        {
+            var builder = new StringBuilder();
+            foreach(var row in _expectedRows.OrderBy(r => r.DateStarted))
+            {
+                var date = row.DateStarted.ToLongDateString();
+                builder.Append($"{date} : {row.Title} - {row.Amount}, {row.Recurring}\n");
+            }
+            TransactionList.Text = builder.ToString();
         }
     }
 }

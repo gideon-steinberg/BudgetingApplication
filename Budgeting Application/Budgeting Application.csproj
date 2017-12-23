@@ -59,8 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataTypes\ReccuringType.cs" />
     <Compile Include="Services\Database.cs" />
-    <Compile Include="Services\ExpectedDTO.cs" />
+    <Compile Include="DataTypes\ExpectedDTO.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
