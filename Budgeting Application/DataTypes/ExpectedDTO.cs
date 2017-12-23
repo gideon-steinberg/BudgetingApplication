@@ -1,6 +1,6 @@
 ﻿using Budgeting_Application.DataTypes;
 
-namespace Budgeting_Application.Services
+namespace Budgeting_Application.DataTypes
 {
     public class ExpectedDTO
     {

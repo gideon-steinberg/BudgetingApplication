@@ -1,4 +1,5 @@
-﻿using Budgeting_Application.Services;
+﻿using Budgeting_Application.DataTypes;
+using Budgeting_Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,28 +31,26 @@ namespace Budgeting_Application
             _expectedRows = _db.ReadExpectedValuesFromDatabase();
             ResetValues();
         }
-
+        
         private void ResetValues()
         {
+            var transactions = CalculatorService.CalculateTransactions(_expectedRows);
+
             var builder = new StringBuilder();
-            foreach(var row in _expectedRows.OrderBy(r => r.Day))
+            foreach(var trans in transactions)
             {
-                builder.Append($"{row.Day} : {row.Title} - {row.Amount}, {row.Recurring}\n");
+                builder.Append($"{trans.Date.ToLongTimeString()} : ({trans.RunningTotal}) {trans.Title} {trans.Amount}\n");
             }
             TransactionList.Text = builder.ToString();
 
-            var line = new Line();
-            line.Stroke = Brushes.LightSteelBlue;
+            DrawGraph(transactions);
+        }
 
-            line.X1 = 1;
-            line.X2 = 375;
-            line.Y1 = 1;
-            line.Y2 = 500;
-
-            line.StrokeThickness = 2;
+        private void DrawGraph(List<TransationDTO> transactions)
+        {
             Graph.Children.Clear();
-            Graph.Children.Add(line);
 
+            // Title
             var text = new TextBlock();
             text.Text = "Graph";
             text.Foreground = new SolidColorBrush(Colors.Black);
@@ -59,6 +58,98 @@ namespace Budgeting_Application
             Canvas.SetTop(text, 0);
             Graph.Children.Add(text);
 
+            var line = new Line();
+            line.Stroke = Brushes.Black;
+
+            line.X1 = 65;
+            line.X2 = 65;
+            line.Y1 = 50;
+            line.Y2 = 450;
+
+            line.StrokeThickness = 2;
+
+            Graph.Children.Add(line);
+
+            line = new Line();
+            line.Stroke = Brushes.Black;
+            line.X1 = 65;
+            line.X2 = 375;
+            line.Y1 = 450;
+            line.Y2 = 450;
+            line.StrokeThickness = 2;
+            Graph.Children.Add(line);
+
+            var maxValue = transactions.Max(trans => trans.RunningTotal);
+            var minValue = transactions.Min(trans => trans.RunningTotal);
+
+            text = new TextBlock();
+            text.Text = maxValue.ToString();
+            text.Foreground = new SolidColorBrush(Colors.Black);
+            Canvas.SetLeft(text, 10);
+            Canvas.SetTop(text, 50);
+            Graph.Children.Add(text);
+
+            text = new TextBlock();
+            text.Text = minValue.ToString();
+            text.Foreground = new SolidColorBrush(Colors.Black);
+            Canvas.SetLeft(text, 10);
+            Canvas.SetTop(text, 425);
+            Graph.Children.Add(text);
+
+            var currentYear = DateTime.Now.Year;
+            var currentMonth = DateTime.Now.Month;
+
+            text = new TextBlock();
+            text.Text = $"1/{currentMonth}/{currentYear}";
+            text.Foreground = new SolidColorBrush(Colors.Black);
+            Canvas.SetLeft(text, 50);
+            Canvas.SetTop(text, 475);
+            Graph.Children.Add(text);
+
+            var finalDay = DateTime.DaysInMonth(currentYear, currentMonth);
+
+            text = new TextBlock();
+            text.Text = $"{finalDay}/{currentMonth}/{currentYear}";
+            text.Foreground = new SolidColorBrush(Colors.Black);
+            Canvas.SetLeft(text, 325);
+            Canvas.SetTop(text, 475);
+            Graph.Children.Add(text);
+
+            var xPixelsPerDay = 300.0 / finalDay;
+            var yPixelsPerAmount = 385.0 / (maxValue - minValue);
+
+            var previousXCoordinate = -1000;
+            var previousYCoordinate = -1000;
+            foreach (var transaction in transactions)
+            {
+                var currentX = (int)(65 + (transaction.Date.Day) * xPixelsPerDay);
+                var currentY = (int)(50 + (maxValue - transaction.RunningTotal) * yPixelsPerAmount);
+
+                var point = new Ellipse();
+                point.Fill = new SolidColorBrush(Colors.Blue);
+                point.StrokeThickness = 2;
+                point.Stroke = Brushes.Blue;
+                point.Width = 5;
+                point.Height = 5;
+                Canvas.SetLeft(point, currentX);
+                Canvas.SetTop(point, currentY);
+
+                Graph.Children.Add(point);
+                if (previousXCoordinate > 0)
+                {
+                    line = new Line();
+                    line.Stroke = Brushes.Blue;
+                    line.X1 = previousXCoordinate;
+                    line.X2 = currentX;
+                    line.Y1 = previousYCoordinate;
+                    line.Y2 = currentY;
+                    line.StrokeThickness = 2;
+                    Graph.Children.Add(line);
+                }
+
+                previousXCoordinate = currentX;
+                previousYCoordinate = currentY;
+            }
         }
     }
 }

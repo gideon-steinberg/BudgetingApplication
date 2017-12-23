@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using Budgeting_Application.DataTypes;
+using CsvHelper;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

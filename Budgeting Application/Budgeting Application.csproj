@@ -60,6 +60,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataTypes\ReccuringType.cs" />
+    <Compile Include="DataTypes\TransationDTO.cs" />
+    <Compile Include="Services\CalculatorService.cs" />
     <Compile Include="Services\Database.cs" />
     <Compile Include="DataTypes\ExpectedDTO.cs" />
     <Page Include="MainWindow.xaml">
