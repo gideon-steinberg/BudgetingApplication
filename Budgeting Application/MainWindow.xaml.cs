@@ -24,17 +24,100 @@ namespace Budgeting_Application
     {
         private List<ExpectedDTO> _expectedRows;
         private Database _db = new Database();
+        private Dictionary<object, string> TextInputCache = new Dictionary<object, string>();
 
         public MainWindow()
         {
             InitializeComponent();
             _expectedRows = _db.ReadExpectedValuesFromDatabase();
-            ResetValues();
+
+            ResetCurrentMonthComboBox();
+            YearTextBox.SelectionChanged += ResetValues;
+            CurrentMonthComboBox.SelectionChanged += ResetValues;
+            StartingAmountTextBox.SelectionChanged += ResetValues;
+            SetNumberListeners();
+
+            ResetValues(null, null);
         }
-        
-        private void ResetValues()
+
+        private void SetNumberListeners()
         {
-            var transactions = CalculatorService.CalculateTransactions(_expectedRows);
+            YearTextBox.PreviewTextInput += EnforceNumbers;
+            YearTextBox.TextChanged += ResetIfInvalid;
+            YearTextBox.AcceptsTab = false;
+            YearTextBox.AcceptsReturn = false;
+
+            StartingAmountTextBox.PreviewTextInput += EnforceNumbers;
+            StartingAmountTextBox.TextChanged += ResetIfInvalid;
+            StartingAmountTextBox.AcceptsTab = false;
+            StartingAmountTextBox.AcceptsReturn = false;
+        }
+
+        private void ResetIfInvalid(object sender, TextChangedEventArgs e)
+        {
+            if ((sender as TextBox).Text == "")
+            {
+                (sender as TextBox).Text = "0";
+            }
+
+            if (TextInputCache.ContainsKey(sender))
+            {
+                int i;
+                if (!int.TryParse((sender as TextBox).Text, out i))
+                {
+                    (sender as TextBox).Text = TextInputCache[sender];
+                }
+                TextInputCache.Remove(sender);
+            }
+        }
+
+        private void EnforceNumbers(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text == "-")
+            {
+                TextInputCache[sender] = (sender as TextBox).Text;
+                return;
+            }
+            int i;
+            e.Handled = !int.TryParse(e.Text, out i);
+        }
+
+        private void ResetCurrentMonthComboBox()
+        {
+            CurrentMonthComboBox.Items.Clear();
+            CurrentMonthComboBox.Items.Add("Jan");
+            CurrentMonthComboBox.Items.Add("Feb");
+            CurrentMonthComboBox.Items.Add("Mar");
+            CurrentMonthComboBox.Items.Add("Apr");
+            CurrentMonthComboBox.Items.Add("May");
+            CurrentMonthComboBox.Items.Add("Jun");
+            CurrentMonthComboBox.Items.Add("Jul");
+            CurrentMonthComboBox.Items.Add("Aug");
+            CurrentMonthComboBox.Items.Add("Sep");
+            CurrentMonthComboBox.Items.Add("Oct");
+            CurrentMonthComboBox.Items.Add("Nov");
+            CurrentMonthComboBox.Items.Add("Dec");
+
+            CurrentMonthComboBox.SelectedIndex = DateTime.Now.Month - 1;
+        }
+
+        private int GetSelectedMonth() => CurrentMonthComboBox.SelectedIndex + 1;
+        private int GetSelectedYear()
+        {
+            var year = int.Parse(YearTextBox.Text);
+            if (year <=1 || year > 4000)
+            {
+                YearTextBox.Text = DateTime.Now.Year.ToString();
+                return DateTime.Now.Year;
+            }
+            return year;
+        }
+
+        private int GetStartingAmount() => int.Parse(StartingAmountTextBox.Text);
+
+        private void ResetValues(object o, object s)
+        {
+            var transactions = CalculatorService.CalculateTransactions(_expectedRows, GetStartingAmount(), GetSelectedMonth(), GetSelectedYear());
 
             var builder = new StringBuilder();
             foreach(var trans in transactions)
@@ -98,8 +181,8 @@ namespace Budgeting_Application
             Canvas.SetTop(text, 425);
             Graph.Children.Add(text);
 
-            var currentYear = DateTime.Now.Year;
-            var currentMonth = DateTime.Now.Month;
+            var currentYear = GetSelectedYear();
+            var currentMonth = GetSelectedMonth();
 
             text = new TextBlock();
             text.Text = $"1/{currentMonth}/{currentYear}";

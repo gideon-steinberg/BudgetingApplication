@@ -7,16 +7,13 @@ namespace Budgeting_Application.Services
 {
     public static class CalculatorService
     {
-        private const int StartingAmount = 30000;
         private static readonly int[] MonthsToPayGST = new int[] { 1, 2, 4, 6, 8, 10 };
 
         public static object Integer { get; private set; }
 
-        public static List<TransationDTO> CalculateTransactions(List<ExpectedDTO> expectedRows)
+        public static List<TransationDTO> CalculateTransactions(List<ExpectedDTO> expectedRows, int startingAmount, int currentMonth, int currentYear)
         {
             var transactions = new List<TransationDTO>();
-            var currentMonth = DateTime.Now.Month;
-            var currentYear = DateTime.Now.Year;
             var finalDay = DateTime.DaysInMonth(currentYear, currentMonth);
 
             var nonIntRows = new List<ExpectedDTO>();
@@ -130,7 +127,7 @@ namespace Budgeting_Application.Services
             }
             transactions = transactions.Where(t => t.Date.Month == currentMonth).OrderBy(t => t.Date).ToList();
 
-            var total = StartingAmount;
+            var total = startingAmount;
             foreach (var transaction in transactions)
             {
                 transaction.RunningTotal = total + transaction.Amount;
