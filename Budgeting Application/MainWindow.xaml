@@ -12,12 +12,12 @@
         </ScrollViewer>
         <Label x:Name="TransactionsLabels" Content="Transactions" HorizontalAlignment="Left" Margin="58,23,0,0" VerticalAlignment="Top"/>
         <Canvas x:Name="Graph" HorizontalAlignment="Right" VerticalAlignment="Top" Width="375" Height="500" Margin="0,20,60,60"/>
-        <ComboBox x:Name="CurrentMonthComboBox" HorizontalAlignment="Left" Margin="79,463,0,0" VerticalAlignment="Top" Width="40"/>
+        <ComboBox x:Name="CurrentMonthComboBox" HorizontalAlignment="Left" Margin="79,463,0,0" VerticalAlignment="Top" Width="54"/>
         <Label x:Name="MonthLabel" Content="Month:" HorizontalAlignment="Left" Margin="26,460,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="YearLabel" Content="Year:" HorizontalAlignment="Left" Margin="124,459,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="YearTextBox" HorizontalAlignment="Left" Height="23" Margin="164,463,0,0" TextWrapping="Wrap" Text="2017" VerticalAlignment="Top" Width="41" RenderTransformOrigin="0.642,1.304"/>
-        <Label x:Name="StartingAmountLabel" Content="Starting:" HorizontalAlignment="Left" Margin="210,459,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="StartingAmountTextBox" HorizontalAlignment="Left" Height="23" Margin="264,463,0,0" TextWrapping="Wrap" Text="30000" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5"/>
+        <Label x:Name="YearLabel" Content="Year:" HorizontalAlignment="Left" Margin="133,459,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="YearTextBox" HorizontalAlignment="Left" Height="23" Margin="173,463,0,0" TextWrapping="Wrap" Text="2017" VerticalAlignment="Top" Width="41" RenderTransformOrigin="0.642,1.304"/>
+        <Label x:Name="StartingAmountLabel" Content="Starting:" HorizontalAlignment="Left" Margin="219,459,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="StartingAmountTextBox" HorizontalAlignment="Left" Height="23" Margin="279,463,0,0" TextWrapping="Wrap" Text="30000" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5"/>
         <Button x:Name="EditExpectedValuesButton" Content="Edit Expected Values" HorizontalAlignment="Left" Margin="26,507,0,0" VerticalAlignment="Top" Width="137" Height="35"/>
         <Button x:Name="ForceUpdateButton" Content="Force Update" HorizontalAlignment="Left" Margin="178,507,0,0" VerticalAlignment="Top" Width="89" Height="35"/>
         <Button x:Name="NewWindowButton" Content="New Window" HorizontalAlignment="Left" Margin="279,507,0,0" VerticalAlignment="Top" Width="75" Height="35"/>
