@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Budgeting_Application"
         mc:Ignorable="d"
-        Title="Budgeting Application" Height="600" Width="800">
+        Title="Budgeting Application" Height="600" Width="800" ResizeMode="NoResize">
     <Grid>
-        <ScrollViewer>
-            <TextBox x:Name="TransactionList" HorizontalAlignment="Left" Height="478" Margin="58,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="255"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="478" Margin="58,54,0,0" VerticalAlignment="Top" Width="280">
+            <TextBlock x:Name="TransactionList" TextWrapping="Wrap" Text="" Width="280"/>
         </ScrollViewer>
         <Label x:Name="TransactionsLabels" Content="Transactions" HorizontalAlignment="Left" Margin="58,23,0,0" VerticalAlignment="Top"/>
         <Canvas x:Name="Graph" HorizontalAlignment="Right" VerticalAlignment="Top" Width="375" Height="500" Margin="0,20,60,60"/>

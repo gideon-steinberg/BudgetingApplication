@@ -39,7 +39,7 @@ namespace Budgeting_Application
             var builder = new StringBuilder();
             foreach(var trans in transactions)
             {
-                builder.Append($"{trans.Date.ToLongDateString()} : ({trans.RunningTotal}) {trans.Title} {trans.Amount}\n");
+                builder.Append($"{trans.Date.ToShortDateString()} : ({trans.RunningTotal}) {trans.Title} {trans.Amount}\n");
             }
             TransactionList.Text = builder.ToString();
 
@@ -125,20 +125,10 @@ namespace Budgeting_Application
                 var currentX = (int)(65 + (transaction.Date.Day) * xPixelsPerDay);
                 var currentY = (int)(50 + (maxValue - transaction.RunningTotal) * yPixelsPerAmount);
 
-                var point = new Ellipse();
-                point.Fill = new SolidColorBrush(Colors.Blue);
-                point.StrokeThickness = 2;
-                point.Stroke = Brushes.Blue;
-                point.Width = 5;
-                point.Height = 5;
-                Canvas.SetLeft(point, currentX);
-                Canvas.SetTop(point, currentY);
-
-                Graph.Children.Add(point);
                 if (previousXCoordinate > 0)
                 {
                     line = new Line();
-                    line.Stroke = Brushes.Blue;
+                    line.Stroke = Brushes.LightBlue;
                     line.X1 = previousXCoordinate;
                     line.X2 = currentX;
                     line.Y1 = previousYCoordinate;
@@ -146,6 +136,17 @@ namespace Budgeting_Application
                     line.StrokeThickness = 2;
                     Graph.Children.Add(line);
                 }
+
+                var point = new Ellipse();
+                point.Fill = new SolidColorBrush(Colors.Green);
+                point.StrokeThickness = 2;
+                point.Stroke = Brushes.Green;
+                point.Width = 4;
+                point.Height = 4;
+                Canvas.SetLeft(point, currentX - 2);
+                Canvas.SetTop(point, currentY - 2);
+
+                Graph.Children.Add(point);
 
                 previousXCoordinate = currentX;
                 previousYCoordinate = currentY;
