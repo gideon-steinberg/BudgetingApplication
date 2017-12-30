@@ -2,6 +2,6 @@
 {
     public enum ReccuringType
     {
-        Once, Daily, Weekly, Monthly, BiMonthly, Yearly
+        Daily, Weekly, Monthly, BiMonthly, Yearly
     }
 }

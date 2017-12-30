@@ -4,15 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Budgeting_Application
@@ -22,14 +17,12 @@ namespace Budgeting_Application
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<ExpectedDTO> _expectedRows;
         private Database _db = new Database();
         private Dictionary<object, string> TextInputCache = new Dictionary<object, string>();
 
         public MainWindow()
         {
             InitializeComponent();
-            _expectedRows = _db.ReadExpectedValuesFromDatabase();
 
             ResetCurrentMonthComboBox();
             YearTextBox.SelectionChanged += ResetValues;
@@ -37,7 +30,28 @@ namespace Budgeting_Application
             StartingAmountTextBox.SelectionChanged += ResetValues;
             SetNumberListeners();
 
+            EditExpectedValuesButton.Click += OpenExpectedValuesDialog;
+            ForceUpdateButton.Click += ForceUpdateButton_Click;
+            NewWindowButton.Click += NewWindowButton_Click;
+
             ResetValues(null, null);
+        }
+
+        private void NewWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new MainWindow();
+            window.Show();
+        }
+
+        private void ForceUpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResetValues(null, null);
+        }
+
+        private void OpenExpectedValuesDialog(object sender, RoutedEventArgs e)
+        {
+            var expectedValues = new ExpectedValues();
+            expectedValues.Show();
         }
 
         private void SetNumberListeners()
@@ -117,7 +131,8 @@ namespace Budgeting_Application
 
         private void ResetValues(object o, object s)
         {
-            var transactions = CalculatorService.CalculateTransactions(_expectedRows, GetStartingAmount(), GetSelectedMonth(), GetSelectedYear());
+            var expectedValues = _db.ReadExpectedValuesFromDatabase();
+            var transactions = CalculatorService.CalculateTransactions(expectedValues, GetStartingAmount(), GetSelectedMonth(), GetSelectedYear());
 
             var builder = new StringBuilder();
             foreach(var trans in transactions)
@@ -127,8 +142,6 @@ namespace Budgeting_Application
             TransactionList.Text = builder.ToString();
 
             DrawGraph(transactions);
-
-            _db.WriteExpectedValuesToDatabase(_expectedRows);
         }
 
         private void DrawGraph(List<TransationDTO> transactions)

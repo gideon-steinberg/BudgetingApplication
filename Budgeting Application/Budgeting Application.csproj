@@ -61,9 +61,16 @@
     </ApplicationDefinition>
     <Compile Include="DataTypes\ReccuringType.cs" />
     <Compile Include="DataTypes\TransationDTO.cs" />
+    <Compile Include="ExpectedValues.xaml.cs">
+      <DependentUpon>ExpectedValues.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\CalculatorService.cs" />
     <Compile Include="Services\Database.cs" />
     <Compile Include="DataTypes\ExpectedDTO.cs" />
+    <Page Include="ExpectedValues.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
