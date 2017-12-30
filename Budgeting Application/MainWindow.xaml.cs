@@ -44,6 +44,8 @@ namespace Budgeting_Application
             TransactionList.Text = builder.ToString();
 
             DrawGraph(transactions);
+
+            _db.WriteExpectedValuesToDatabase(_expectedRows);
         }
 
         private void DrawGraph(List<TransationDTO> transactions)

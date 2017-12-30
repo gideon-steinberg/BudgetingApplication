@@ -12,16 +12,16 @@ namespace Budgeting_Application.Services
     
         public List<ExpectedDTO> ReadExpectedValuesFromDatabase()
         {
-            var streamreader = new StreamReader(ExpectedFileName);
-            var reader = new CsvReader(streamreader);
-            return reader.GetRecords<ExpectedDTO>().ToList();
+            using (var streamreader = new StreamReader(ExpectedFileName))
+                using (var reader = new CsvReader(streamreader))
+                    return reader.GetRecords<ExpectedDTO>().ToList();
         }
 
         public void WriteExpectedValuesToDatabase(List<ExpectedDTO> rows)
         {
-            var streamWriter = new StreamWriter(ExpectedFileName);
-            var writer = new CsvWriter(streamWriter);
-            writer.WriteRecords(rows);
+            using (var streamWriter = new StreamWriter(ExpectedFileName))
+                using(var writer = new CsvWriter(streamWriter))
+                    writer.WriteRecords(rows);
         }
     }
 }
