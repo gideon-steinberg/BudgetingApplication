@@ -1,3 +1,3 @@
-﻿Title,Amount,DateStarted,Recurring,Day
-Cat,1,22/12/2017,Monthly,0
-Dog,2,23/12/2017,Daily,0
+﻿Title,Amount,Recurring,Day
+Cat,1,Monthly,20
+Dog,2,Daily,1
