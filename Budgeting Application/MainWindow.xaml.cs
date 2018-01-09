@@ -26,6 +26,7 @@ namespace Budgeting_Application
 
             ResetCurrentMonthComboBox();
             YearTextBox.SelectionChanged += ResetValues;
+            YearTextBox.Text = DateTime.Now.Year.ToString();
             CurrentMonthComboBox.SelectionChanged += ResetValues;
             StartingAmountTextBox.SelectionChanged += ResetValues;
             SetNumberListeners();
